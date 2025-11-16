@@ -1,104 +1,132 @@
-// ========================
-// TAB SWITCHING
-// ========================
-const menuBtns = document.querySelectorAll(".menu-btn");
-const tabs = document.querySelectorAll(".tab");
-
-menuBtns.forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelector(".menu-btn.active")?.classList.remove("active");
-    btn.classList.add("active");
-
-    document.querySelector(".tab.active")?.classList.remove("active");
-    document.getElementById(btn.dataset.tab).classList.add("active");
-  });
-});
-
-
-// ========================
-// CALCULATOR
-// ========================
-const display = document.getElementById("display");
-const btnContainer = document.getElementById("buttons");
-
 let memory = 0;
-let degMode = true;
+let angleMode = "DEG";
+let ans = "";
 
-const calcButtons = [
-  "7","8","9","/","sin","cos",
-  "4","5","6","*","tan","log",
-  "1","2","3","-","√","x²",
-  "0",".","=","+","(",")",
-  "AC","DEL","π","e"
-];
+const display = document.getElementById("display");
+const buttons = document.querySelectorAll("#buttons button");
 
-// GENERATE BUTTONS
-calcButtons.forEach(txt => {
-  const b = document.createElement("button");
-  b.textContent = txt;
-  b.className = "btn";
-  b.addEventListener("click", () => handleButton(txt));
-  btnContainer.appendChild(b);
-});
-
-
-// ========================
-// BUTTON LOGIC
-// ========================
-function handleButton(val) {
-
-  if (val === "AC") {
-    display.value = "";
-    return;
-  }
-
-  if (val === "DEL") {
-    display.value = display.value.slice(0, -1);
-    return;
-  }
-
-  if (val === "=") {
-    try {
-      let expr = display.value
-        .replace(/sin/g, "Math.sin")
-        .replace(/cos/g, "Math.cos")
-        .replace(/tan/g, "Math.tan")
-        .replace(/log/g, "Math.log10")
-        .replace(/√/g, "Math.sqrt")
-        .replace(/x²/g, "**2")
-        .replace(/π/g, "Math.PI")
-        .replace(/e/g, "Math.E");
-
-      if (degMode) {
-        expr = expr.replace(/Math.sin\(/g, "Math.sin((Math.PI/180)*");
-        expr = expr.replace(/Math.cos\(/g, "Math.cos((Math.PI/180)*");
-        expr = expr.replace(/Math.tan\(/g, "Math.tan((Math.PI/180)*");
-      }
-
-      display.value = eval(expr);
-    } catch {
-      display.value = "Error";
-    }
-    return;
-  }
-
-  display.value += val;
+function trig(x, fn) {
+    if (angleMode === "DEG") x = x * Math.PI / 180;
+    return fn(x);
 }
 
+buttons.forEach(btn => {
+    btn.addEventListener("click", () => {
+        let key = btn.textContent;
 
-// ========================
-// MEMORY BUTTONS
-// ========================
-document.getElementById("mc").onclick = () => (memory = 0);
-document.getElementById("mr").onclick = () => (display.value += memory);
-document.getElementById("mplus").onclick = () => (memory += Number(display.value || 0));
-document.getElementById("mminus").onclick = () => (memory -= Number(display.value || 0));
+        switch (key) {
+            case "AC":
+                display.value = "";
+                break;
 
+            case "DEL":
+                display.value = display.value.slice(0, -1);
+                break;
 
-// ========================
-// DEG/RAD TOGGLE
-// ========================
-document.getElementById("degRad").onclick = () => {
-  degMode = !degMode;
-  document.getElementById("degRad").textContent = degMode ? "DEG" : "RAD";
-};
+            case "=":
+                calculate();
+                break;
+
+            case "MC":
+                memory = 0;
+                break;
+
+            case "MR":
+                display.value += memory;
+                break;
+
+            case "M+":
+                try { memory += Number(eval(display.value)); } catch {}
+                break;
+
+            case "M-":
+                try { memory -= Number(eval(display.value)); } catch {}
+                break;
+
+            case "sin":
+                display.value += "sin(";
+                break;
+
+            case "cos":
+                display.value += "cos(";
+                break;
+
+            case "tan":
+                display.value += "tan(";
+                break;
+
+            case "log":
+                display.value += "log(";
+                break;
+
+            case "ln":
+                display.value += "ln(";
+                break;
+
+            case "√":
+                display.value += "sqrt(";
+                break;
+
+            case "x²":
+                display.value += "**2";
+                break;
+
+            case "x³":
+                display.value += "**3";
+                break;
+
+            case "xʸ":
+                display.value += "**";
+                break;
+
+            case "EXP":
+                display.value += "e";
+                break;
+
+            case "π":
+                display.value += "Math.PI";
+                break;
+
+            case "e":
+                display.value += "Math.E";
+                break;
+
+            case "Ans":
+                display.value += ans;
+                break;
+
+            default:
+                display.value += key;
+        }
+    });
+});
+
+function calculate() {
+    let expr = display.value;
+
+    try {
+        expr = expr
+            .replace(/sin\(/g, "trig(")
+            .replace(/cos\(/g, "trigC(")
+            .replace(/tan\(/g, "trigT(")
+            .replace(/log\(/g, "Math.log10(")
+            .replace(/ln\(/g, "Math.log(")
+            .replace(/sqrt\(/g, "Math.sqrt(");
+
+        window.trig = (x) => trig(x, Math.sin);
+        window.trigC = (x) => trig(x, Math.cos);
+        window.trigT = (x) => trig(x, Math.tan);
+
+        const result = eval(expr);
+        ans = result;
+        display.value = result;
+
+    } catch {
+        display.value = "Error";
+    }
+}
+
+document.getElementById("degRadBtn").addEventListener("click", () => {
+    angleMode = angleMode === "DEG" ? "RAD" : "DEG";
+    document.getElementById("degRadBtn").textContent = angleMode;
+});
