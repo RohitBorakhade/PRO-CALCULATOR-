@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>UltraPro Calculator</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="pwa/manifest.json" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar glass">
+      <div class="logo">
+        <div class="logo-icon">UP</div>
+        <div class="logo-text">UltraPro</div>
+      </div>
+      <nav class="menu">
+        <button data-tab="calculator" class="menu-btn active">Calculator</button>
+        <button data-tab="graph" class="menu-btn">Graphing</button>
+        <button data-tab="ai" class="menu-btn">AI Solver</button>
+        <button data-tab="convert" class="menu-btn">Converter</button>
+        <button data-tab="prog" class="menu-btn">Programmer</button>
+        <button data-tab="matrix" class="menu-btn">Matrix</button>
+        <button data-tab="finance" class="menu-btn">Finance</button>
+        <button data-tab="history" class="menu-btn">History</button>
+        <button data-tab="settings" class="menu-btn">Settings</button>
+      </nav>
+      <div class="sidebar-footer">
+        <small>v1.0 • Offline PWA</small>
+      </div>
+    </aside>
+
+    <main class="main glass">
+      <!-- Calculator -->
+      <section id="calculator" class="tab active">
+        <div class="calc-top">
+          <input id="display" type="text" placeholder="0" readonly />
+          <div class="calc-controls">
+            <button id="mc">MC</button><button id="mr">MR</button>
+            <button id="mplus">M+</button><button id="mminus">M-</button>
+            <button id="degRad">DEG</button>
+          </div>
+        </div>
+        <div id="buttons" class="buttons-grid"></div>
+      </section>
+
+      <!-- Graph -->
+      <section id="graph" class="tab">
+        <div class="graph-controls">
+          <input id="graph-fn" placeholder="Enter f(x) e.g. sin(x) or x^2" />
+          <button id="plotBtn">Plot</button>
+          <button id="clearPlot">Clear</button>
+        </div>
+        <canvas id="graphCanvas" width="900" height="400"></canvas>
+      </section>
+
+      <!-- AI Solver -->
+      <section id="ai" class="tab">
+        <h2>AI Solver (step-by-step)</h2>
+        <textarea id="ai-input" placeholder="e.g. 2x+5=15 or x^2-5x+6=0"></textarea>
+        <div><button id="aiSolve">Solve</button></div>
+        <pre id="ai-output" class="output"></pre>
+      </section>
+
+      <!-- Converter -->
+      <section id="convert" class="tab">
+        <h2>Unit Converter</h2>
+        <div class="converter">
+          <select id="conv-type">
+            <option value="length">Length (m ↔ cm ↔ km)</option>
+            <option value="temp">Temperature (°C ↔ °F)</option>
+            <option value="weight">Weight (kg ↔ g)</option>
+          </select>
+          <input id="conv-input" placeholder="Value" />
+          <select id="conv-from"></select>
+          <select id="conv-to"></select>
+          <button id="conv-do">Convert</button>
+          <div id="conv-output" class="output"></div>
+        </div>
+      </section>
+
+      <!-- Programmer -->
+      <section id="prog" class="tab">
+        <h2>Programmer Mode</h2>
+        <input id="prog-input" placeholder="Enter number or binary string" />
+        <div class="prog-controls">
+          <button id="toBin">To Binary</button>
+          <button id="toDec">To Decimal</button>
+          <button id="toHex">To Hex</button>
+          <button id="bitAnd">AND</button>
+          <button id="bitOr">OR</button>
+          <button id="bitXor">XOR</button>
+        </div>
+        <pre id="prog-output" class="output"></pre>
+      </section>
+
+      <!-- Matrix -->
+      <section id="matrix" class="tab">
+        <h2>Matrix Tools</h2>
+        <p>Enter matrix rows separated by semicolon and commas for columns:<br>
+        Example: <code>1,2;3,4</code></p>
+        <input id="mat-a" placeholder="Matrix A" />
+        <input id="mat-b" placeholder="Matrix B (for multiply/add)" />
+        <div class="matrix-controls">
+          <button id="mat-add">A + B</button>
+          <button id="mat-mul">A × B</button>
+          <button id="mat-det">det(A)</button>
+          <button id="mat-inv">inv(A)</button>
+        </div>
+        <pre id="mat-output" class="output"></pre>
+      </section>
+
+      <!-- Finance -->
+      <section id="finance" class="tab">
+        <h2>Finance Tools</h2>
+        <label>Loan amount: <input id="loan-amt" placeholder="Principal"></label>
+        <label>Annual rate (%) <input id="loan-rate" placeholder="Rate"></label>
+        <label>Years <input id="loan-years" placeholder="Years"></label>
+        <div><button id="calc-emi">Calculate EMI</button></div>
+        <pre id="finance-output" class="output"></pre>
+      </section>
+
+      <!-- History -->
+      <section id="history" class="tab">
+        <h2>History</h2>
+        <div class="history-controls">
+          <input id="history-search" placeholder="Search history..." />
+          <button id="history-export">Export</button>
+          <button id="history-clear">Clear All</button>
+        </div>
+        <ul id="history-list" class="history-list"></ul>
+      </section>
+
+      <!-- Settings -->
+      <section id="settings" class="tab">
+        <h2>Settings</h2>
+        <div class="setting-item">
+          <label>Theme:</label>
+          <button id="toggle-theme">Toggle Theme</button>
+        </div>
+        <div class="setting-item">
+          <label>Clear storage:</label>
+          <button id="clear-storage">Clear Saved Data</button>
+        </div>
+        <div class="setting-item">
+          <label>PWA:</label>
+          <small>Install from browser menu (supports offline)</small>
+        </div>
+        <div class="setting-item">
+          <small>App version: 1.0</small>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>
