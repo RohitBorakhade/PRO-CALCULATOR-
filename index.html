@@ -3,156 +3,100 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>UltraPro Calculator</title>
+  <title>UltraPro — Advanced Scientific</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="manifest" href="pwa/manifest.json" />
 </head>
 <body>
-  <div class="app">
-    <aside class="sidebar glass">
-      <div class="logo">
-        <div class="logo-icon">UP</div>
-        <div class="logo-text">UltraPro</div>
+  <header class="topbar">
+    <div class="brand">
+      <!-- local screenshot/logo (use exact path below) -->
+      <img src="/mnt/data/39B22312-D775-4591-B015-4E03CFA53554.jpeg" alt="UltraPro" class="logo" />
+      <div class="titles">
+        <div class="app-name">UltraPro</div>
+        <div class="app-mode">Advanced • Scientific</div>
       </div>
-      <nav class="menu">
-        <button data-tab="calculator" class="menu-btn active">Calculator</button>
-        <button data-tab="graph" class="menu-btn">Graphing</button>
-        <button data-tab="ai" class="menu-btn">AI Solver</button>
-        <button data-tab="convert" class="menu-btn">Converter</button>
-        <button data-tab="prog" class="menu-btn">Programmer</button>
-        <button data-tab="matrix" class="menu-btn">Matrix</button>
-        <button data-tab="finance" class="menu-btn">Finance</button>
-        <button data-tab="history" class="menu-btn">History</button>
-        <button data-tab="settings" class="menu-btn">Settings</button>
-      </nav>
-      <div class="sidebar-footer">
-        <small>v1.0 • Offline PWA</small>
+    </div>
+    <div class="mode-pill">Calculator</div>
+  </header>
+
+  <main class="container">
+    <section class="display-area">
+      <div class="memory-rail">
+        <button class="mem-btn" data-action="MC">MC</button>
+        <button class="mem-btn" data-action="MR">MR</button>
+        <button class="mem-btn" data-action="M+">M+</button>
+        <button class="mem-btn" data-action="M-">M-</button>
+        <button class="mem-btn" id="radDeg">RAD</button>
       </div>
-    </aside>
 
-    <main class="main glass">
-      <!-- Calculator -->
-      <section id="calculator" class="tab active">
-        <div class="calc-top">
-          <input id="display" type="text" placeholder="0" readonly />
-          <div class="calc-controls">
-            <button id="mc">MC</button><button id="mr">MR</button>
-            <button id="mplus">M+</button><button id="mminus">M-</button>
-            <button id="degRad">DEG</button>
-          </div>
-        </div>
-        <div id="buttons" class="buttons-grid"></div>
-      </section>
+      <div class="screen" id="screen">0</div>
+    </section>
 
-      <!-- Graph -->
-      <section id="graph" class="tab">
-        <div class="graph-controls">
-          <input id="graph-fn" placeholder="Enter f(x) e.g. sin(x) or x^2" />
-          <button id="plotBtn">Plot</button>
-          <button id="clearPlot">Clear</button>
-        </div>
-        <canvas id="graphCanvas" width="900" height="400"></canvas>
-      </section>
+    <section class="pad">
+      <div class="grid">
+        <!-- Row 1 -->
+        <button class="btn func" data-fn="sin">sin</button>
+        <button class="btn func" data-fn="cos">cos</button>
+        <button class="btn func" data-fn="tan">tan</button>
+        <button class="btn func" data-fn="ln">ln</button>
+        <button class="btn func" data-fn="log">log</button>
+        <button class="btn op" data-op="pow">xʸ</button>
 
-      <!-- AI Solver -->
-      <section id="ai" class="tab">
-        <h2>AI Solver (step-by-step)</h2>
-        <textarea id="ai-input" placeholder="e.g. 2x+5=15 or x^2-5x+6=0"></textarea>
-        <div><button id="aiSolve">Solve</button></div>
-        <pre id="ai-output" class="output"></pre>
-      </section>
+        <!-- Row 2 -->
+        <button class="btn func" data-fn="sqrt">√</button>
+        <button class="btn func" data-fn="x2">x²</button>
+        <button class="btn func" data-fn="x3">x³</button>
+        <button class="btn func" data-fn="recip">1/x</button>
+        <button class="btn func" data-fn="exp">EXP</button>
+        <button class="btn func" id="rand">RAND</button>
 
-      <!-- Converter -->
-      <section id="convert" class="tab">
-        <h2>Unit Converter</h2>
-        <div class="converter">
-          <select id="conv-type">
-            <option value="length">Length (m ↔ cm ↔ km)</option>
-            <option value="temp">Temperature (°C ↔ °F)</option>
-            <option value="weight">Weight (kg ↔ g)</option>
-          </select>
-          <input id="conv-input" placeholder="Value" />
-          <select id="conv-from"></select>
-          <select id="conv-to"></select>
-          <button id="conv-do">Convert</button>
-          <div id="conv-output" class="output"></div>
-        </div>
-      </section>
+        <!-- Row 3 -->
+        <button class="btn const" data-val="PI">π</button>
+        <button class="btn const" data-val="E">e</button>
+        <button class="btn const" data-val="PHI">φ</button>
+        <button class="btn op" data-op="%">%</button>
+        <button class="btn paren" data-val="(">(</button>
+        <button class="btn paren" data-val=")">)</button>
 
-      <!-- Programmer -->
-      <section id="prog" class="tab">
-        <h2>Programmer Mode</h2>
-        <input id="prog-input" placeholder="Enter number or binary string" />
-        <div class="prog-controls">
-          <button id="toBin">To Binary</button>
-          <button id="toDec">To Decimal</button>
-          <button id="toHex">To Hex</button>
-          <button id="bitAnd">AND</button>
-          <button id="bitOr">OR</button>
-          <button id="bitXor">XOR</button>
-        </div>
-        <pre id="prog-output" class="output"></pre>
-      </section>
+        <!-- Row 4 -->
+        <button class="btn num" data-num="7">7</button>
+        <button class="btn num" data-num="8">8</button>
+        <button class="btn num" data-num="9">9</button>
+        <button class="btn op" data-op="÷">÷</button>
+        <button class="btn action" id="DEL">DEL</button>
+        <button class="btn action" id="AC">AC</button>
 
-      <!-- Matrix -->
-      <section id="matrix" class="tab">
-        <h2>Matrix Tools</h2>
-        <p>Enter matrix rows separated by semicolon and commas for columns:<br>
-        Example: <code>1,2;3,4</code></p>
-        <input id="mat-a" placeholder="Matrix A" />
-        <input id="mat-b" placeholder="Matrix B (for multiply/add)" />
-        <div class="matrix-controls">
-          <button id="mat-add">A + B</button>
-          <button id="mat-mul">A × B</button>
-          <button id="mat-det">det(A)</button>
-          <button id="mat-inv">inv(A)</button>
-        </div>
-        <pre id="mat-output" class="output"></pre>
-      </section>
+        <!-- Row 5 -->
+        <button class="btn num" data-num="4">4</button>
+        <button class="btn num" data-num="5">5</button>
+        <button class="btn num" data-num="6">6</button>
+        <button class="btn op" data-op="×">×</button>
+        <button class="btn mem-small" id="mplus">M+</button>
+        <button class="btn mem-small" id="mminus">M-</button>
 
-      <!-- Finance -->
-      <section id="finance" class="tab">
-        <h2>Finance Tools</h2>
-        <label>Loan amount: <input id="loan-amt" placeholder="Principal"></label>
-        <label>Annual rate (%) <input id="loan-rate" placeholder="Rate"></label>
-        <label>Years <input id="loan-years" placeholder="Years"></label>
-        <div><button id="calc-emi">Calculate EMI</button></div>
-        <pre id="finance-output" class="output"></pre>
-      </section>
+        <!-- Row 6 -->
+        <button class="btn num" data-num="1">1</button>
+        <button class="btn num" data-num="2">2</button>
+        <button class="btn num" data-num="3">3</button>
+        <button class="btn op" data-op="−">−</button>
+        <button class="btn empty"></button>
+        <button class="btn empty"></button>
 
-      <!-- History -->
-      <section id="history" class="tab">
-        <h2>History</h2>
-        <div class="history-controls">
-          <input id="history-search" placeholder="Search history..." />
-          <button id="history-export">Export</button>
-          <button id="history-clear">Clear All</button>
-        </div>
-        <ul id="history-list" class="history-list"></ul>
-      </section>
+        <!-- Row 7 -->
+        <button class="btn wide num" data-num="0">0</button>
+        <button class="btn num" data-num=".">.</button>
+        <button class="btn op" data-op="+">+</button>
+        <button class="btn eq" id="equals">=</button>
+        <button class="btn empty"></button>
+        <button class="btn empty"></button>
+      </div>
+    </section>
+  </main>
 
-      <!-- Settings -->
-      <section id="settings" class="tab">
-        <h2>Settings</h2>
-        <div class="setting-item">
-          <label>Theme:</label>
-          <button id="toggle-theme">Toggle Theme</button>
-        </div>
-        <div class="setting-item">
-          <label>Clear storage:</label>
-          <button id="clear-storage">Clear Saved Data</button>
-        </div>
-        <div class="setting-item">
-          <label>PWA:</label>
-          <small>Install from browser menu (supports offline)</small>
-        </div>
-        <div class="setting-item">
-          <small>App version: 1.0</small>
-        </div>
-      </section>
-    </main>
-  </div>
+  <footer class="footer-note">
+    UltraPro • Advanced Scientific — Mobile responsive
+  </footer>
 
-  <script type="module" src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
